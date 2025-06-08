@@ -8,10 +8,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const pool = mysql.createPool({
-    host: 'database',
-    user: 'user',
-    password: 'pass',
-    database: 'testdb',
+    host: process.env('DB_HOST'),
+    user: process.env('DB_USER'),
+    password: process.env('DB_PASSWORD'),
+    database: process.env('DB_NAME'),
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -23,7 +23,7 @@ async function connectWithRetry(retries = 15, delay = 5000) {
             const connection = await pool.getConnection();
             console.log('Successfully connected to MySQL database.');
             connection.release();
-            return; // Exit on successful connection
+            return;
         } catch (err) {
             console.error(`Attempt ${i + 1}/${retries}: Error connecting to MySQL database: ${err.message}`);
             if (i < retries - 1) {
@@ -31,7 +31,7 @@ async function connectWithRetry(retries = 15, delay = 5000) {
                 await new Promise(res => setTimeout(res, delay));
             } else {
                 console.error('Max retries reached. Exiting application.');
-                process.exit(1); // Exit if max retries reached
+                process.exit(1);
             }
         }
     }
@@ -56,7 +56,6 @@ async function createPostsTable() {
     }
 }
 
-// Main initialization function
 async function initializeApp() {
     await connectWithRetry();
     await createPostsTable();
