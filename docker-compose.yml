@@ -1,0 +1,43 @@
+services:
+  database:
+    image: mysql:8
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - backend_network
+
+  backend:
+    build: ./backend
+    container_name: backend
+    depends_on:
+      - database
+    ports:
+      - "5000:5000"
+    networks:
+      - backend_network
+      - frontend_network
+  
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend_network
+
+networks:
+  backend_network:
+    driver: bridge
+  frontend_network:
+    driver: bridge
+
+volumes:
+  db_data:
