@@ -18,7 +18,7 @@ services:
     depends_on:
       - database
     ports:
-      - "5000:5000"
+      - "5001:5001"
     environment:
       DB_HOST: database
       DB_NAME: testdb
@@ -26,7 +26,6 @@ services:
       DB_PASSWORD: pass
     networks:
       - backend_network
-      - frontend_network
   
   frontend:
     build: ./frontend
@@ -34,14 +33,10 @@ services:
     depends_on:
       - backend
     ports:
-      - "3000:3000"
-    networks:
-      - frontend_network
+      - "3001:3001"
 
 networks:
   backend_network:
-    driver: bridge
-  frontend_network:
     driver: bridge
 
 volumes:

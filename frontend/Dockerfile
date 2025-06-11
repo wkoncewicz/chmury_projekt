@@ -11,5 +11,5 @@ COPY --from=builder /app/src ./src
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/postcss.config.js ./postcss.config.js
 COPY --from=builder /app/tailwind.config.js ./tailwind.config.js
-EXPOSE 3000
+EXPOSE 3001
 CMD ["npm", "start"]

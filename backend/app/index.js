@@ -8,10 +8,10 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const pool = mysql.createPool({
-    host: process.env('DB_HOST'),
-    user: process.env('DB_USER'),
-    password: process.env('DB_PASSWORD'),
-    database: process.env('DB_NAME'),
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0
@@ -60,7 +60,7 @@ async function initializeApp() {
     await connectWithRetry();
     await createPostsTable();
     
-    const PORT = 5000;
+    const PORT = 5001;
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
     });
